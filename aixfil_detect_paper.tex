@@ -507,52 +507,54 @@ files through the same code path used for real forensic images.
 
 
 
-\begin{table*}[t]
-  \begin{minipage}{0.48\textwidth}
-    \caption{Representative Scenario Results (30 s Window, Threshold = 75)}
-    \label{tab:results}
-    \begin{center}
-    \footnotesize
-    \begin{tabular}{lccccc}
-      \toprule
-      \textbf{Scenario} & \textbf{Exp.} & \textbf{Act.} &
-      \textbf{WACS} & \textbf{Res.} & \textbf{Sim.} \\
-      \midrule
-      01: payroll, claude.ai    & H & H & 100 & TP & 1.00 \\
-      07: cert, off-hours 02:00 & H & H & 100 & TP & 1.00 \\
-      08: 150\,KB upload        & H & H & 100 & TP & 1.00 \\
-      10: customer list         & H & H & 100 & TP & 1.00 \\
-      11: clipboard missed win. & M & M &  45 & TN & 0.00 \\
-      16: short clipboard       & M & M &  55 & TN & 0.00 \\
-      19: DPAPI encrypted       & M & M &  55 & TN & 0.00 \\
-      20: near threshold        & M & M &  72 & TN & 0.00 \\
-      21: normal browsing       & B & B &   0 & TN & 0.00 \\
-      30: non-sensitive file    & B & B &  35 & TN & 1.00 \\
-      \bottomrule
-      \multicolumn{6}{l}{H\,=\,HIGH; M\,=\,MED; B\,=\,BASE; Sim.\,=\,MinHash.}
-    \end{tabular}
-    \end{center}
-  \end{minipage}\hfill
-  \begin{minipage}{0.48\textwidth}
-    \caption{Classification Performance by Threshold and Window}
-    \label{tab:pr}
-    \begin{center}
-    \begin{tabular}{ccccc}
-      \toprule
-      \textbf{Threshold} & \textbf{Window} &
-      \textbf{Precision} & \textbf{Recall} & \textbf{F1} \\
-      \midrule
-      50 & 30 s & 0.625 & 1.000 & 0.769 \\
-      50 & 60 s & 0.500 & 1.000 & 0.667 \\
-      65 & 30 s & 0.909 & 1.000 & 0.952 \\
-      65 & 60 s & 0.588 & 1.000 & 0.741 \\
-      \textbf{75} & \textbf{30 s} & \textbf{1.000} & \textbf{1.000} & \textbf{1.000} \\
-      75 & 60 s & 0.833 & 1.000 & 0.909 \\
-      \bottomrule
-    \end{tabular}
-    \end{center}
-  \end{minipage}
-\end{table*}
+\begin{table}[!htbp]
+  \caption{Representative Scenario Results (30 s Window, Threshold = 75)}
+  \label{tab:results}
+  \begin{center}
+  \resizebox{\columnwidth}{!}{
+  \begin{tabular}{lccccc}
+    \toprule
+    \textbf{Scenario} & \textbf{Exp.} & \textbf{Act.} &
+    \textbf{WACS} & \textbf{Res.} & \textbf{Sim.} \\
+    \midrule
+    01: payroll, claude.ai    & H & H & 100 & TP & 1.00 \\
+    07: cert, off-hours 02:00 & H & H & 100 & TP & 1.00 \\
+    08: 150\,KB upload        & H & H & 100 & TP & 1.00 \\
+    10: customer list         & H & H & 100 & TP & 1.00 \\
+    11: clipboard missed win. & M & M &  45 & TN & 0.00 \\
+    16: short clipboard       & M & M &  55 & TN & 0.00 \\
+    19: DPAPI encrypted       & M & M &  55 & TN & 0.00 \\
+    20: near threshold        & M & M &  72 & TN & 0.00 \\
+    21: normal browsing       & B & B &   0 & TN & 0.00 \\
+    30: non-sensitive file    & B & B &  35 & TN & 1.00 \\
+    \bottomrule
+    \multicolumn{6}{l}{H\,=\,HIGH; M\,=\,MED; B\,=\,BASE; Sim.\,=\,MinHash.}
+  \end{tabular}
+  }
+  \end{center}
+\end{table}
+
+\begin{table}[!htbp]
+  \caption{Classification Performance by Threshold and Window}
+  \label{tab:pr}
+  \begin{center}
+  \resizebox{\columnwidth}{!}{
+  \begin{tabular}{ccccc}
+    \toprule
+    \textbf{Threshold} & \textbf{Window} &
+    \textbf{Precision} & \textbf{Recall} & \textbf{F1} \\
+    \midrule
+    50 & 30 s & 0.625 & 1.000 & 0.769 \\
+    50 & 60 s & 0.500 & 1.000 & 0.667 \\
+    65 & 30 s & 0.909 & 1.000 & 0.952 \\
+    65 & 60 s & 0.588 & 1.000 & 0.741 \\
+    \textbf{75} & \textbf{30 s} & \textbf{1.000} & \textbf{1.000} & \textbf{1.000} \\
+    75 & 60 s & 0.833 & 1.000 & 0.909 \\
+    \bottomrule
+  \end{tabular}
+  }
+  \end{center}
+\end{table}
 
 At threshold 75 and 30-second window, the tool achieved precision,
 recall, and F1 of 1.00 (Table~\ref{tab:pr}). HIGH scenarios separated
