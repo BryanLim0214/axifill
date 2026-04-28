@@ -279,6 +279,13 @@ site, paste the text into the prompt box, and click send. The whole
 process takes less than a minute. After that, the data lives on
 a server the company does not control.
 
+\begin{figure}[!htbp]
+  \centerline{\includegraphics[width=0.9\columnwidth]{figures/fig1_wacs_distribution}}
+  \caption{WACS score distribution for all 30 scenarios at the 30-second
+  window. HIGH scenarios (red) all score 100. MEDIUM (orange) and BASELINE
+  (green) are clearly separated.}
+  \label{fig:wacs_dist}
+\end{figure}
 Standard security tools miss this because they each look at only one
 thing at a time. DLP systems look at outbound file transfers and email
 attachments, not at text typed into a chat window~\cite{diro2025workplace}.
@@ -312,6 +319,12 @@ time window. Third, a scoring function assigns a WACS score to each
 group of events. Fourth, everything is written into an HTML report that
 an investigator can open in any browser.
 
+\begin{figure}[!htbp]
+  \centerline{\includegraphics[width=0.9\columnwidth]{figures/fig2_precision_recall_curve}}
+  \caption{Precision and recall vs.\ WACS threshold at the 30-second
+  window. Recall stays at 1.000 across all thresholds.}
+  \label{fig:pr_curve}
+\end{figure}
 \subsection{Layer 1: Browser History Collector}
 
 Chrome and Edge store browsing history in a SQLite database file called
@@ -348,11 +361,12 @@ bytes, or if it is DPAPI-encrypted, it gets 10 points
 (corroboration)~\cite{kankanamge2025chatgpt}.
 
 \begin{figure}[!htbp]
-  \centerline{\includegraphics[width=0.9\columnwidth]{figures/fig6_dpapi_impact}}
-  \caption{Actual WACS (gray) vs.\ estimated WACS if clipboard were
-  readable (orange) for DPAPI-affected scenarios.}
-  \label{fig:dpapi}
+  \centerline{\includegraphics[width=0.9\columnwidth]{figures/fig3_source_contribution}}
+  \caption{Average WACS when each data source is present versus absent.
+  The clipboard produces the largest score difference (51.3 points).}
+  \label{fig:source_contrib}
 \end{figure}
+
 
 \subsection{Layer 3: Filesystem Collector}
 
@@ -392,6 +406,12 @@ For each connection, the collector adds up total bytes sent. A base score
 of 15 points is awarded for any AI upload. An extra 10 points are added
 if the upload exceeds 100 KB (document-sized).
 
+\begin{figure}[!htbp]
+  \centerline{\includegraphics[width=0.9\columnwidth]{figures/fig4_timeline_heatmap}}
+  \caption{Hour-of-day distribution for all 30 scenarios, colored by WACS
+  score. Off-hours HIGH scenarios reach WACS = 100.}
+  \label{fig:heatmap}
+\end{figure}
 \subsection{Temporal Correlator}
 
 The correlator merges all events into one list sorted by time. It
@@ -400,12 +420,7 @@ to an AI domain. Groups with events from two or more sources are kept
 for scoring. All timestamps are normalized to standard Unix seconds
 before grouping~\cite{breitinger2025sok}.
 
-\begin{figure}[!htbp]
-  \centerline{\includegraphics[width=0.9\columnwidth]{figures/fig4_timeline_heatmap}}
-  \caption{Hour-of-day distribution for all 30 scenarios, colored by WACS
-  score. Off-hours HIGH scenarios reach WACS = 100.}
-  \label{fig:heatmap}
-\end{figure}
+
 
 \subsection{WACS Scorer}
 
@@ -454,6 +469,7 @@ BASELINE ($<$40).
   \label{fig:minhash}
 \end{figure}
 
+
 \subsection{Anti-Forensics Detection}
 
 When MFT data is available, the tool compares
@@ -463,12 +479,12 @@ clipboard entries, or Prefetch anomalies also trigger warning flags.
 These do not change the WACS score but appear in the report.
 
 \begin{figure}[!htbp]
-  \centerline{\includegraphics[width=0.9\columnwidth]{figures/fig1_wacs_distribution}}
-  \caption{WACS score distribution for all 30 scenarios at the 30-second
-  window. HIGH scenarios (red) all score 100. MEDIUM (orange) and BASELINE
-  (green) are clearly separated.}
-  \label{fig:wacs_dist}
+  \centerline{\includegraphics[width=0.9\columnwidth]{figures/fig6_dpapi_impact}}
+  \caption{Actual WACS (gray) vs.\ estimated WACS if clipboard were
+  readable (orange) for DPAPI-affected scenarios.}
+  \label{fig:dpapi}
 \end{figure}
+
 
 % ─────────────────────────────────────────────────────────────────────────────
 %  V. EXPERIMENTAL EVALUATION
@@ -485,21 +501,11 @@ cover six file types (.xlsx, .pdf, .py, .sql, .pfx, .csv) and six AI
 platforms. AIXFil-Detect reads the generated SQLite, JSON, and PCAP
 files through the same code path used for real forensic images.
 
-\begin{figure}[!htbp]
-  \centerline{\includegraphics[width=0.9\columnwidth]{figures/fig3_source_contribution}}
-  \caption{Average WACS when each data source is present versus absent.
-  The clipboard produces the largest score difference (51.3 points).}
-  \label{fig:source_contrib}
-\end{figure}
+
 
 \subsection{Results}
 
-\begin{figure}[!htbp]
-  \centerline{\includegraphics[width=0.9\columnwidth]{figures/fig8_source_completeness}}
-  \caption{Average number of active data sources per scenario by verdict
-  tier. More sources consistently means a higher tier.}
-  \label{fig:source_complete}
-\end{figure}
+
 
 \begin{table*}[t]
   \begin{minipage}{0.48\textwidth}
@@ -559,6 +565,7 @@ perfectly from MEDIUM and BASELINE tiers.
   \label{fig:window}
 \end{figure}
 
+
 \subsection{Analysis}
 
 The clipboard layer was the strongest indicator (51.3 point marginal
@@ -568,11 +575,12 @@ false positives compared to 60 seconds. Scenario 19 (DPAPI-encrypted)
 was correctly downgraded to MEDIUM confidence as expected.
 
 \begin{figure}[!htbp]
-  \centerline{\includegraphics[width=0.9\columnwidth]{figures/fig7_window_sensitivity}}
-  \caption{Detection Accuracy by Temporal Correlation Window Size. The
-  30-second window achieves perfect scores at threshold 75.}
-  \label{fig:window}
+  \centerline{\includegraphics[width=0.9\columnwidth]{figures/fig8_source_completeness}}
+  \caption{Average number of active data sources per scenario by verdict
+  tier. More sources consistently means a higher tier.}
+  \label{fig:source_complete}
 \end{figure}
+
 
 % ─────────────────────────────────────────────────────────────────────────────
 %  VI. DISCUSSION
@@ -588,12 +596,7 @@ when active (average 88.6), but only appeared in half the scenarios.
 Combining artifacts within a short window reconstruction the copy-paste
 sequence reliably.
 
-\begin{figure}[!htbp]
-  \centerline{\includegraphics[width=0.9\columnwidth]{figures/fig2_precision_recall_curve}}
-  \caption{Precision and recall vs.\ WACS threshold at the 30-second
-  window. Recall stays at 1.000 across all thresholds.}
-  \label{fig:pr_curve}
-\end{figure}
+
 
 
 
@@ -642,3 +645,4 @@ forensics and computer security.
 \bibliography{aixfil_references}
 
 \end{document}
+
